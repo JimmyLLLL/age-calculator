@@ -60,12 +60,20 @@
     <div class="tool-card">
         <div class="input-row">
             <div class="input-group">
-                <label for="dob">Date of Birth</label>
-                <input type="date" id="dob" lang="en" max="">
+                <label>Date of Birth</label>
+                <div class="date-selects">
+                    <select id="dobYear" aria-label="Birth year"></select>
+                    <select id="dobMonth" aria-label="Birth month"></select>
+                    <select id="dobDay" aria-label="Birth day"></select>
+                </div>
             </div>
             <div class="input-group">
-                <label for="targetDate">Age at Date <span style="opacity:.6">(optional — defaults to today)</span></label>
-                <input type="date" id="targetDate" lang="en">
+                <label>Age at Date <span style="opacity:.6">(optional — defaults to today)</span></label>
+                <div class="date-selects">
+                    <select id="tgtYear" aria-label="Target year"></select>
+                    <select id="tgtMonth" aria-label="Target month"></select>
+                    <select id="tgtDay" aria-label="Target day"></select>
+                </div>
             </div>
         </div>
         <div class="btn-row">
@@ -92,6 +100,7 @@
         <div class="stat-card green"><div class="stat-num" id="totalMinutes">0</div><div class="stat-label">Minutes</div></div>
         <div class="stat-card red"><div class="stat-num" id="totalSeconds">0</div><div class="stat-label">Seconds</div></div>
     </div>
+    <p class="stats-note" id="statsNote" style="display:none;">Big numbers update live — watch the seconds tick!</p>
 
     <div class="stats-footer">👁️ Views <strong id="pv">-</strong><span class="stat-divider">|</span>👤 Visitors <strong id="uv">-</strong></div>
 
@@ -139,22 +148,105 @@
 </footer>
 <script src="js/counter.js" defer></script>
 <script>
-const dobInput = document.getElementById("dob");
-const targetInput = document.getElementById("targetDate");
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const today = new Date();
+
+function daysInMonth(year, month) {
+    return new Date(year, month + 1, 0).getDate();
+}
+
+function fillYearSelect(sel, fromYear, toYear, selected) {
+    sel.innerHTML = "";
+    const opt = document.createElement("option");
+    opt.value = "";
+    opt.textContent = "Year";
+    sel.appendChild(opt);
+    for (let y = toYear; y >= fromYear; y--) {
+        const o = document.createElement("option");
+        o.value = y;
+        o.textContent = y;
+        sel.appendChild(o);
+    }
+    sel.value = selected != null ? selected : "";
+}
+
+function fillMonthSelect(sel, selected) {
+    sel.innerHTML = "";
+    const opt = document.createElement("option");
+    opt.value = "";
+    opt.textContent = "Month";
+    sel.appendChild(opt);
+    for (let m = 0; m < 12; m++) {
+        const o = document.createElement("option");
+        o.value = m;
+        o.textContent = MONTHS[m];
+        sel.appendChild(o);
+    }
+    sel.value = selected != null ? selected : "";
+}
+
+function fillDaySelect(sel, year, month, selected) {
+    sel.innerHTML = "";
+    const opt = document.createElement("option");
+    opt.value = "";
+    opt.textContent = "Day";
+    sel.appendChild(opt);
+    const maxDay = (year !== "" && month !== "") ? daysInMonth(Number(year), Number(month)) : 31;
+    for (let d = 1; d <= maxDay; d++) {
+        const o = document.createElement("option");
+        o.value = d;
+        o.textContent = d;
+        sel.appendChild(o);
+    }
+    sel.value = selected != null ? selected : "";
+}
+
+const dobYear = document.getElementById("dobYear");
+const dobMonth = document.getElementById("dobMonth");
+const dobDay = document.getElementById("dobDay");
+const tgtYear = document.getElementById("tgtYear");
+const tgtMonth = document.getElementById("tgtMonth");
+const tgtDay = document.getElementById("tgtDay");
+
 const todayStr = today.toISOString().split("T")[0];
-targetInput.value = todayStr;
-dobInput.max = todayStr;
+const todayDate = new Date(todayStr + "T00:00:00");
+
+// Birth year range: 1900 to today
+fillYearSelect(dobYear, 1900, today.getFullYear());
+fillMonthSelect(dobMonth);
+fillDaySelect(dobDay, "", "");
+
+// Target year range: 1900 to +10 years (allow future age-as-of date)
+fillYearSelect(tgtYear, 1900, today.getFullYear() + 10, today.getFullYear());
+fillMonthSelect(tgtMonth, today.getMonth());
+fillDaySelect(tgtDay, today.getFullYear(), today.getMonth(), today.getDate());
+
+// Re-populate days when year/month changes
+function bindDayRefresh(yearSel, monthSel, daySel) {
+    yearSel.addEventListener("change", function() {
+        const prev = daySel.value;
+        fillDaySelect(daySel, yearSel.value, monthSel.value, prev);
+    });
+    monthSel.addEventListener("change", function() {
+        const prev = daySel.value;
+        fillDaySelect(daySel, yearSel.value, monthSel.value, prev);
+    });
+}
+bindDayRefresh(dobYear, dobMonth, dobDay);
+bindDayRefresh(tgtYear, tgtMonth, tgtDay);
 
 let liveTimer = null;
 
-function calculateAge() {
-    const dobStr = dobInput.value;
-    if (!dobStr) { alert("Please enter your date of birth."); return; }
+function getDateFromSelects(yearSel, monthSel, daySel) {
+    if (!yearSel.value || monthSel.value === "" || !daySel.value) return null;
+    return new Date(Number(yearSel.value), Number(monthSel.value), Number(daySel.value));
+}
 
-    const dob = new Date(dobStr + "T00:00:00");
-    const targetStr = targetInput.value || todayStr;
-    const target = new Date(targetStr + "T00:00:00");
+function calculateAge() {
+    const dob = getDateFromSelects(dobYear, dobMonth, dobDay);
+    if (!dob) { alert("Please select your full date of birth."); return; }
+
+    const target = getDateFromSelects(tgtYear, tgtMonth, tgtDay) || todayDate;
 
     if (dob > target) { alert("Date of birth cannot be after the target date."); return; }
 
@@ -173,7 +265,9 @@ function calculateAge() {
         months += 12;
     }
 
-    const isToday = targetStr === todayStr;
+    const isToday = (target.getFullYear() === todayDate.getFullYear() &&
+                     target.getMonth() === todayDate.getMonth() &&
+                     target.getDate() === todayDate.getDate());
 
     // Show main result
     document.getElementById("resultAge").textContent = years + " yrs";
@@ -187,8 +281,6 @@ function calculateAge() {
         let nextBday = new Date(today.getFullYear(), dob.getMonth(), dob.getDate());
         if (nextBday < today) nextBday.setFullYear(today.getFullYear() + 1);
         const bdayDiff = Math.ceil((nextBday - today) / (1000 * 60 * 60 * 24));
-        const bdayMonths = dob.getMonth() + 1;
-        const bdayDay = dob.getDate();
         const bdayDate = nextBday.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
         document.getElementById("bdayText").textContent =
             bdayDiff + " days (" + bdayDate + ")";
@@ -198,7 +290,10 @@ function calculateAge() {
     }
 
     // Total units
-    document.getElementById("statsGrid").style.display = "grid";
+    const grid = document.getElementById("statsGrid");
+    const note = document.getElementById("statsNote");
+    grid.style.display = "grid";
+    note.style.display = isToday ? "block" : "none";
 
     function updateTotals() {
         const now = isToday ? new Date() : target;
@@ -226,16 +321,19 @@ function calculateAge() {
 }
 
 function clearAll() {
-    dobInput.value = "";
-    targetInput.value = todayStr;
+    dobYear.value = "";
+    dobMonth.value = "";
+    dobDay.value = "";
+    fillDaySelect(dobDay, "", "");
+    tgtYear.value = today.getFullYear();
+    tgtMonth.value = today.getMonth();
+    fillDaySelect(tgtDay, today.getFullYear(), today.getMonth(), today.getDate());
     document.getElementById("resultMain").classList.remove("show");
     document.getElementById("nextBday").classList.remove("show");
     document.getElementById("statsGrid").style.display = "none";
+    document.getElementById("statsNote").style.display = "none";
     clearInterval(liveTimer);
 }
-
-dobInput.addEventListener("change", calculateAge);
-targetInput.addEventListener("change", calculateAge);
 </script>
 </body>
 </html>
