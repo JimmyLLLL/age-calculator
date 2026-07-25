@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
+    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+    <link rel="preconnect" href="https://api.counterapi.dev">
+    <link rel="dns-prefetch" href="https://api.counterapi.dev">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0b0f">
+    <meta name="description" content="Free age calculator — calculate your exact age in years, months, days, weeks, hours, minutes, and seconds. Find your next birthday countdown. No download, works in your browser.">
+    <meta name="keywords" content="age calculator, calculate age, age in days, age in months, birthday calculator, how old am I, exact age, date of birth calculator, next birthday">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://jimmywithfiona.com/age-calculator/">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1840337371416691" crossorigin="anonymous"></script>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Age Calculator">
+    <meta property="og:title" content="Age Calculator — Find Your Exact Age in Years, Months, Days & Seconds">
+    <meta property="og:description" content="Calculate your exact age in years, months, days, weeks, hours, minutes, and seconds. Free, live, no download.">
+    <meta property="og:url" content="https://jimmywithfiona.com/age-calculator/">
+    <meta property="og:image" content="https://jimmywithfiona.com/age-calculator/favicon.svg">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Age Calculator — Exact Age in Years, Months, Days">
+    <meta name="twitter:description" content="Calculate your exact age and next birthday countdown instantly.">
+    <meta name="twitter:image" content="https://jimmywithfiona.com/age-calculator/favicon.svg">
+    <title>Age Calculator — Find Your Exact Age in Years, Months & Days</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebApplication","name":"Age Calculator","url":"https://jimmywithfiona.com/age-calculator/","description":"Free online age calculator. Calculate your exact age in years, months, days, weeks, hours, minutes, and seconds.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any (Web Browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    </script>
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+        {"@type":"Question","name":"How does the age calculator work?","acceptedAnswer":{"@type":"Answer","text":"Enter your date of birth and the calculator instantly computes your exact age in years, months, days, weeks, hours, minutes, and seconds. It updates in real-time."}},
+        {"@type":"Question","name":"How is age calculated?","acceptedAnswer":{"@type":"Answer","text":"Age is calculated as the difference between your date of birth and the target date. Years are counted by calendar year boundaries, then remaining months, then remaining days."}},
+        {"@type":"Question","name":"Can I calculate age at a specific date?","acceptedAnswer":{"@type":"Answer","text":"Yes. By default the calculator uses today's date, but you can enter a custom target date to calculate age as of any past or future date."}},
+        {"@type":"Question","name":"Is this age calculator free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely free. No signup, no download, no limits. All calculations happen in your browser."}}
+    ]}
+    </script>
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://jimmywithfiona.com/"},{"@type":"ListItem","position":2,"name":"Age Calculator","item":"https://jimmywithfiona.com/age-calculator/"}]}
+    </script>
+</head>
+<body>
+<nav class="navbar">
+    <a class="brand" href="/age-calculator/">🎂 Age Calculator</a>
+    <div class="nav-links">
+        <a href="/age-calculator/" class="active">Calculator</a>
+        <a href="about.html">About</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="contact.html">Contact</a>
+        <a href="/">🏠 Home</a>
+    </div>
+</nav>
+<main>
+    <h1>Age Calculator</h1>
+    <p class="subtitle">Calculate your exact age in years, months, days, weeks, hours, minutes, and seconds — live.</p>
+
+    <div class="tool-card">
+        <div class="input-row">
+            <div class="input-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" max="">
+            </div>
+            <div class="input-group">
+                <label for="targetDate">Age at Date <span style="opacity:.6">(optional — defaults to today)</span></label>
+                <input type="date" id="targetDate">
+            </div>
+        </div>
+        <div class="btn-row">
+            <button class="btn" onclick="calculateAge()">🎂 Calculate Age</button>
+            <button class="btn btn-secondary" onclick="clearAll()">🗑️ Clear</button>
+        </div>
+    </div>
+
+    <div class="result-main" id="resultMain">
+        <div class="result-age" id="resultAge">—</div>
+        <div class="result-detail" id="resultDetail"></div>
+    </div>
+
+    <div class="next-bday" id="nextBday">
+        <div class="label">🎉 Next Birthday</div>
+        <div class="value" id="bdayText">—</div>
+    </div>
+
+    <div class="stats-grid" id="statsGrid" style="display:none;">
+        <div class="stat-card"><div class="stat-num" id="totalMonths">0</div><div class="stat-label">Months</div></div>
+        <div class="stat-card green"><div class="stat-num" id="totalWeeks">0</div><div class="stat-label">Weeks</div></div>
+        <div class="stat-card gold"><div class="stat-num" id="totalDays">0</div><div class="stat-label">Days</div></div>
+        <div class="stat-card"><div class="stat-num" id="totalHours">0</div><div class="stat-label">Hours</div></div>
+        <div class="stat-card green"><div class="stat-num" id="totalMinutes">0</div><div class="stat-label">Minutes</div></div>
+        <div class="stat-card red"><div class="stat-num" id="totalSeconds">0</div><div class="stat-label">Seconds</div></div>
+    </div>
+
+    <div class="stats-footer">👁️ Views <strong id="pv">-</strong><span class="stat-divider">|</span>👤 Visitors <strong id="uv">-</strong></div>
+
+    <div class="seo-section">
+        <h2>Free Online Age Calculator</h2>
+        <p>Our free age calculator lets you find your exact age in years, months, and days, plus your total age in weeks, hours, minutes, and seconds. Simply enter your date of birth and instantly see how old you are — down to the second. The calculator updates in real-time, so the seconds keep ticking.</p>
+        <h2>How to Calculate Your Age</h2>
+        <ul>
+            <li><strong>Enter your date of birth</strong> — Use the date picker to select the day you were born.</li>
+            <li><strong>Optional: Age at date</strong> — Calculate your age as of any past or future date. Defaults to today.</li>
+            <li><strong>Click Calculate</strong> — Get your exact age in years, months, and days instantly.</li>
+            <li><strong>See total units</strong> — View your age in total months, weeks, days, hours, minutes, and seconds.</li>
+            <li><strong>Next birthday countdown</strong> — See how many days until your next birthday.</li>
+        </ul>
+        <h2>How Is Age Calculated?</h2>
+        <p>Age is calculated as the difference between two dates: your date of birth and the target date. The calculator counts complete years first (calendar year boundaries), then remaining complete months, then remaining days. For example, if you were born on March 15, 1995, and today is July 25, 2026, your age is 31 years, 4 months, and 10 days.</p>
+        <p>The total values (weeks, hours, minutes, seconds) are calculated from the exact time difference. One day = 24 hours = 1,440 minutes = 86,400 seconds. One week = 7 days. These totals update live as time passes.</p>
+        <h2>Why Use an Age Calculator?</h2>
+        <ul>
+            <li><strong>Personal curiosity</strong> — Find out exactly how old you are in days or seconds</li>
+            <li><strong>Eligibility checks</strong> — Verify age for voting, driving, retirement, or enrollment</li>
+            <li><strong>Birthday planning</strong> — Countdown to your next birthday</li>
+            <li><strong>Pet age</strong> — Calculate your pet's age in human-readable terms</li>
+            <li><strong>Anniversaries</strong> — Find out how long since an important date</li>
+            <li><strong>Legal documents</strong> — Quickly determine age as of a specific date</li>
+        </ul>
+        <h2>Age Calculation Examples</h2>
+        <ul>
+            <li><strong>Years, months, days</strong> — The most common format: "31 years, 4 months, 10 days"</li>
+            <li><strong>Total days</strong> — "11,440 days old" — great for milestones</li>
+            <li><strong>Total weeks</strong> — "1,634 weeks old"</li>
+            <li><strong>Total seconds</strong> — "987,840,000 seconds old" — for fun facts</li>
+        </ul>
+        <h2>FAQ</h2>
+        <p><strong>Is this age calculator accurate?</strong> — Yes. It accounts for leap years and varying month lengths (28–31 days) for precise results.</p>
+        <p><strong>Does it account for leap years?</strong> — Yes. Leap years are factored into the calculation, so your age is accurate even if you were born on February 29.</p>
+        <p><strong>Can I calculate someone else's age?</strong> — Yes. Just enter their date of birth. No personal data is stored.</p>
+        <p><strong>Is my data safe?</strong> — Yes. All calculations happen locally in your browser. Your date of birth is never sent to any server.</p>
+    </div>
+</main>
+<footer>
+    <p><a href="about.html">About</a> · <a href="privacy.html">Privacy</a> · <a href="contact.html">Contact</a> · <a href="/">Home</a></p>
+    <p style="margin-top:0.4rem;">Age Calculator © 2026 · Free online age calculator</p>
+    <div style="margin-top:0.6rem;font-size:0.72rem;opacity:0.6;">More: <a href="/word-counter/">Word Counter</a> · <a href="/typing-test/">Typing Test</a> · <a href="/quick-tools/">QuickTools</a> · <a href="/game-2048/">2048</a> · <a href="/bmi-calculator/">BMI Calculator</a></div>
+</footer>
+<script src="js/counter.js" defer></script>
+<script>
+const dobInput = document.getElementById("dob");
+const targetInput = document.getElementById("targetDate");
+const today = new Date();
+const todayStr = today.toISOString().split("T")[0];
+targetInput.value = todayStr;
+dobInput.max = todayStr;
+
+let liveTimer = null;
+
+function calculateAge() {
+    const dobStr = dobInput.value;
+    if (!dobStr) { alert("Please enter your date of birth."); return; }
+
+    const dob = new Date(dobStr + "T00:00:00");
+    const targetStr = targetInput.value || todayStr;
+    const target = new Date(targetStr + "T00:00:00");
+
+    if (dob > target) { alert("Date of birth cannot be after the target date."); return; }
+
+    // Calculate years, months, days
+    let years = target.getFullYear() - dob.getFullYear();
+    let months = target.getMonth() - dob.getMonth();
+    let days = target.getDate() - dob.getDate();
+
+    if (days < 0) {
+        months--;
+        const prevMonth = new Date(target.getFullYear(), target.getMonth(), 0);
+        days += prevMonth.getDate();
+    }
+    if (months < 0) {
+        years--;
+        months += 12;
+    }
+
+    const isToday = targetStr === todayStr;
+
+    // Show main result
+    document.getElementById("resultAge").textContent = years + " yrs";
+    document.getElementById("resultDetail").textContent =
+        years + " years, " + months + " months, " + days + " days";
+    document.getElementById("resultMain").classList.add("show");
+
+    // Next birthday (only if target is today)
+    const bdayEl = document.getElementById("nextBday");
+    if (isToday) {
+        let nextBday = new Date(today.getFullYear(), dob.getMonth(), dob.getDate());
+        if (nextBday < today) nextBday.setFullYear(today.getFullYear() + 1);
+        const bdayDiff = Math.ceil((nextBday - today) / (1000 * 60 * 60 * 24));
+        const bdayMonths = dob.getMonth() + 1;
+        const bdayDay = dob.getDate();
+        const bdayDate = nextBday.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
+        document.getElementById("bdayText").textContent =
+            bdayDiff + " days (" + bdayDate + ")";
+        bdayEl.classList.add("show");
+    } else {
+        bdayEl.classList.remove("show");
+    }
+
+    // Total units
+    document.getElementById("statsGrid").style.display = "grid";
+
+    function updateTotals() {
+        const now = isToday ? new Date() : target;
+        const diffMs = now - dob;
+        const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        const totalWeeks = Math.floor(totalDays / 7);
+        const totalMonths = years * 12 + months;
+        const totalHours = Math.floor(diffMs / (1000 * 60 * 60));
+        const totalMinutes = Math.floor(diffMs / (1000 * 60));
+        const totalSeconds = Math.floor(diffMs / 1000);
+
+        document.getElementById("totalMonths").textContent = totalMonths.toLocaleString();
+        document.getElementById("totalWeeks").textContent = totalWeeks.toLocaleString();
+        document.getElementById("totalDays").textContent = totalDays.toLocaleString();
+        document.getElementById("totalHours").textContent = totalHours.toLocaleString();
+        document.getElementById("totalMinutes").textContent = totalMinutes.toLocaleString();
+        document.getElementById("totalSeconds").textContent = totalSeconds.toLocaleString();
+    }
+
+    updateTotals();
+    clearInterval(liveTimer);
+    if (isToday) {
+        liveTimer = setInterval(updateTotals, 1000);
+    }
+}
+
+function clearAll() {
+    dobInput.value = "";
+    targetInput.value = todayStr;
+    document.getElementById("resultMain").classList.remove("show");
+    document.getElementById("nextBday").classList.remove("show");
+    document.getElementById("statsGrid").style.display = "none";
+    clearInterval(liveTimer);
+}
+
+dobInput.addEventListener("change", calculateAge);
+targetInput.addEventListener("change", calculateAge);
+</script>
+</body>
+</html>
