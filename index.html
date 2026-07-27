@@ -272,7 +272,9 @@ function calculateAge() {
     // Show main result
     document.getElementById("resultAge").textContent = years + " yrs";
     document.getElementById("resultDetail").textContent =
-        years + " years, " + months + " months, " + days + " days";
+        years + " year" + (years !== 1 ? "s" : "") + ", " +
+        months + " month" + (months !== 1 ? "s" : "") + ", " +
+        days + " day" + (days !== 1 ? "s" : "");
     document.getElementById("resultMain").classList.add("show");
 
     // Next birthday (only if target is today)
