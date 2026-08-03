@@ -402,5 +402,17 @@ localStorage.setItem('bm_dismissed','1');
 })();
 </script>
 <!-- /BOOKMARK-PROMPT -->
+<!-- I18N -->
+<script>
+(function(){
+var lang=(navigator.language||navigator.userLanguage||'en').toLowerCase();
+if(!lang.startsWith('zh'))return;
+var ZH={"Calculate":"计算","Date of Birth":"出生日期","subtitle":"精确计算你的年龄。"};
+document.querySelectorAll('h1').forEach(function(e){if(e.textContent.trim()==="Age Calculator")e.textContent="年龄计算器"});
+document.querySelectorAll('.subtitle').forEach(function(e){e.textContent="精确计算你的年龄。"});
+document.documentElement.lang='zh-CN';
+})();
+</script>
+<!-- /I18N -->
 </body>
 </html>
