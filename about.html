@@ -40,5 +40,35 @@
 </main>
 <footer><p>© 2026 Age Calculator · <a href="/">Home</a></p></footer>
 <script src="js/counter.js" defer></script>
+<!-- I18N-FULL -->
+<script>
+(function(){
+var lang=(navigator.language||navigator.userLanguage||'en').toLowerCase();
+if(!lang.startsWith('zh'))return;
+var ZH={"🎂 Age Calculator":"🎂 年龄计算器","Calculator":"计算器","About":"关于","Privacy":"隐私","Contact":"联系","🏠 Home":"🏠 首页","About Age Calculator":"关于年龄计算器","Our free age calculator helps you find your exact age in years, months, and days, plus your total age in weeks, hours, minutes, and seconds. Whether you're checking eligibility, planning a birthday, or just curious how many seconds you've been alive, our tool gives you instant, accurate results.":"我们免费的年龄计算器帮您精确计算年、月、日年龄，以及周、小时、分钟和秒的总年龄。无论您是在确认资格、规划生日，还是只是好奇自己活了多少秒，我们的工具都能即时给出准确结果。","Features":"功能特点","Exact age in years, months, and days":"精确的年、月、日年龄","Total age in months, weeks, days, hours, minutes, seconds":"以月、周、天、小时、分钟、秒表示的总年龄","Live-updating seconds counter":"实时更新的秒数计数器","Next birthday countdown":"下次生日倒计时","Calculate age at any past or future date":"计算过去或未来任意日期的年龄","Accounts for leap years and variable month lengths":"考虑闰年和不同月份天数","100% free, no signup, no download":"100% 免费，无需注册，无需下载","All calculations happen locally in your browser":"所有计算均在您的浏览器本地完成","How It Works":"工作原理","The calculator finds the difference between your date of birth and the target date. It counts complete calendar years, then remaining months, then remaining days. Total values (weeks, hours, minutes, seconds) are computed from the exact millisecond difference.":"计算器会算出您的出生日期与目标日期之间的差值。它先计算完整的日历年，再计算剩余的月数，最后计算剩余的天数。总值（周、小时、分钟、秒）则根据精确的毫秒差值计算得出。","Calculate Your Age →":"计算您的年龄 →","👁️ Views":"👁️ 浏览量","👤 Visitors":"👤 访客数","© 2026 Age Calculator ·":"© 2026 年龄计算器 ·","Home":"首页"};
+function walk(node){
+if(node.nodeType===3){
+var t=node.textContent,k=t.trim();
+if(k&&ZH[k]){node.textContent=t.replace(k,ZH[k])}
+}else if(node.nodeType===1&&node.tagName!=='SCRIPT'&&node.tagName!=='STYLE'&&node.tagName!=='NOSCRIPT'){
+if(node.childNodes.length>1){
+var full=node.textContent.trim();
+if(ZH[full]){node.textContent=ZH[full];return}
+}
+for(var i=0;i<node.childNodes.length;i++){walk(node.childNodes[i])}
+}
+}
+walk(document.body);
+document.documentElement.lang='zh-CN';
+var mo=new MutationObserver(function(muts){
+muts.forEach(function(m){
+if(m.type==='childList'){m.addedNodes.forEach(function(n){walk(n)})}
+else if(m.type==='characterData'){walk(m.target)}
+});
+});
+mo.observe(document.body,{childList:true,subtree:true,characterData:true});
+})();
+</script>
+<!-- /I18N-FULL -->
 </body>
 </html>
