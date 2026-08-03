@@ -49,6 +49,15 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://jimmywithfiona.com/"},{"@type":"ListItem","position":2,"name":"Calculators","item":"https://jimmywithfiona.com/calculators/"},{"@type":"ListItem","position":3,"name":"Age Calculator","item":"https://jimmywithfiona.com/age-calculator/"}]}</script>
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Age Calculator","url":"https://jimmywithfiona.com/age-calculator/","applicationCategory":"UtilityApplication","operatingSystem":"Any (Web Browser)","description":"Calculate exact age in years, months, days, hours, seconds","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"JimmyWithFiona","url":"https://jimmywithfiona.com/"}}</script>
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','G-XXXXXXXXXX');
+</script>
+<!-- /GA4 -->
 </head>
 <body>
 <nav class="navbar">
@@ -367,5 +376,31 @@ function clearAll() {
     clearInterval(liveTimer);
 }
 </script>
+<!-- BOOKMARK-PROMPT -->
+<script>
+(function(){
+var shown=false;
+function showBookmarkHint(){
+if(shown)return;shown=true;
+var d=document.createElement('div');
+d.id='bm-hint';
+d.style.cssText='position:fixed;bottom:80px;right:20px;background:#161922;border:1px solid #2d3340;border-radius:12px;padding:1rem 1.2rem;max-width:260px;z-index:200;box-shadow:0 8px 32px rgba(0,0,0,.4);font-size:.82rem;color:#e8eaf0;font-family:sans-serif;transition:opacity .3s,transform .3s;opacity:0;transform:translateY(10px)';
+d.innerHTML='<div style="font-weight:700;margin-bottom:.3rem;">⭐ Bookmark this tool</div><div style="color:#7a8190;font-size:.75rem;margin-bottom:.6rem;">Quick access for next time — press Ctrl+D</div><button id="bm-close" style="background:#4f8cff;color:#fff;border:none;border-radius:6px;padding:.3rem .8rem;font-size:.72rem;cursor:pointer">Got it</button>';
+document.body.appendChild(d);
+setTimeout(function(){{d.style.opacity='1';d.style.transform='translateY(0)';}},100);
+document.getElementById('bm-close').onclick=function(){{d.style.opacity='0';d.style.transform='translateY(10px)';setTimeout(function(){{d.remove()}},300)}};
+}
+var互动=0;
+function checkEngagement(){
+互动++;
+if(互动>=3&&!localStorage.getItem('bm_dismissed')){
+showBookmarkHint();
+localStorage.setItem('bm_dismissed','1');
+}
+}
+['click','keydown','touchstart'].forEach(function(e){document.addEventListener(e,checkEngagement,{once:false,passive:true})});
+})();
+</script>
+<!-- /BOOKMARK-PROMPT -->
 </body>
 </html>
