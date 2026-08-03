@@ -402,17 +402,28 @@ localStorage.setItem('bm_dismissed','1');
 })();
 </script>
 <!-- /BOOKMARK-PROMPT -->
-<!-- I18N -->
+<!-- I18N-FULL -->
 <script>
 (function(){
 var lang=(navigator.language||navigator.userLanguage||'en').toLowerCase();
 if(!lang.startsWith('zh'))return;
-var ZH={"Calculate":"计算","Date of Birth":"出生日期","subtitle":"精确计算你的年龄。"};
-document.querySelectorAll('h1').forEach(function(e){if(e.textContent.trim()==="Age Calculator")e.textContent="年龄计算器"});
-document.querySelectorAll('.subtitle').forEach(function(e){e.textContent="精确计算你的年龄。"});
+var ZH={"Find your exact age.":"精确计算你的年龄。","Calculate":"计算","Date of Birth":"出生日期","years":"岁","months":"个月","days":"天","hours":"小时","minutes":"分","seconds":"秒","Free age calculator":"免费年龄计算器","Find your exact age in years, months, days, hours, minutes, seconds.":"精确计算年龄：年、月、日、时、分、秒。"};
+function walk(node){
+if(node.nodeType===3){
+var t=node.textContent.trim();
+for(var en in ZH){
+if(t.indexOf(en)>=0){
+node.textContent=node.textContent.replace(en,ZH[en]);
+}
+}
+}else if(node.nodeType===1&&node.tagName!=='SCRIPT'&&node.tagName!=='STYLE'){
+for(var i=0;i<node.childNodes.length;i++){walk(node.childNodes[i])}
+}
+}
+walk(document.body);
 document.documentElement.lang='zh-CN';
 })();
 </script>
-<!-- /I18N -->
+<!-- /I18N-FULL -->
 </body>
 </html>
