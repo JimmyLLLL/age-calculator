@@ -71,6 +71,8 @@ footer a{color:var(--hover);text-decoration:none}
   .stats-grid{gap:.6rem}
   .stat-card{padding:1rem .5rem}
   .navbar{padding:.75rem 1.25rem}
+  .date-selects{gap:.3rem}
+  .date-selects select{padding:.6rem .3rem;padding-right:1.2rem;font-size:.82rem}
 }
 @media(max-width:420px){
   .stats-grid{grid-template-columns:repeat(2,1fr)}
